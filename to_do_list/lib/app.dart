@@ -290,6 +290,46 @@ class _TodolistState extends State {
     );
   }
 
+  bool darkMode = false;
+
+  Color onToggle() {
+    if (!darkMode) {
+      return Colors.black;
+    } else {
+      return Colors.white;
+    }
+  }
+
+  List<BoxShadow>? changeShadow() {
+    if (darkMode == true) {
+      return const [
+        BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 3,
+            blurRadius: 20,
+            offset: Offset(-2, 2))
+      ];
+    } else {
+      return const [BoxShadow()];
+    }
+  }
+
+  Color appbarColor() {
+    if (!darkMode) {
+      return const Color.fromRGBO(255, 255, 255, 1);
+    } else {
+      return const Color.fromRGBO(59, 60, 54, 1);
+    }
+  }
+
+  Color colorMode() {
+    if (!darkMode) {
+      return const Color.fromRGBO(59, 60, 54, 1);
+    } else {
+      return const Color.fromRGBO(255, 255, 255, 1);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -299,9 +339,39 @@ class _TodolistState extends State {
           style: GoogleFonts.quicksand(
             fontWeight: FontWeight.w800,
             fontSize: 25,
+            shadows: const [
+              Shadow(
+                color: Colors.grey,
+                blurRadius: 20,
+                offset: Offset(-8, 8),
+              )
+            ],
+            color: onToggle(),
           ),
         ),
-        backgroundColor: const Color.fromRGBO(0, 139, 147, 0.8),
+        centerTitle: true,
+        backgroundColor: appbarColor(),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(40),
+            bottomRight: Radius.circular(40),
+          ),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                darkMode = !darkMode;
+              });
+            },
+            child: Icon(
+              Icons.light_mode,
+              size: 28,
+              color: onToggle(),
+            ),
+          ),
+          const SizedBox(width: 15),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
@@ -313,13 +383,14 @@ class _TodolistState extends State {
             },
           );
         },
-        backgroundColor: const Color.fromRGBO(0, 139, 147, 1),
-        child: const Icon(
+        backgroundColor: appbarColor(),
+        child: Icon(
           Icons.add,
-          size: 30,
-          color: Colors.white,
+          size: 33,
+          color: onToggle(),
         ),
       ),
+      backgroundColor: colorMode(),
       body: ListView.builder(
         itemCount: cardList.length,
         itemBuilder: (BuildContext context, int index) {
@@ -331,14 +402,7 @@ class _TodolistState extends State {
               borderRadius: const BorderRadius.all(
                 Radius.circular(10),
               ),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.grey,
-                  spreadRadius: 3,
-                  blurRadius: 20,
-                  offset: Offset(-2, 2),
-                ),
-              ],
+              boxShadow: changeShadow(),
             ),
             child: Column(
               children: [

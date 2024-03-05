@@ -30,15 +30,26 @@ class _TodoAppState extends State {
   // GlobalKey<FormFieldState> descriptionKey = GlobalKey<FormFieldState>();
   // GlobalKey<FormFieldState> dateKey = GlobalKey<FormFieldState>();
 
-  void submitDate() {
-    todoCard.add(
-      UserData(
-        task: taskController.text,
-        description: descriptionController.text,
-        date: dateController.text,
-      ),
-    );
-    clearData();
+  void submitData(bool doEdit, [UserData? forEditUseDataObj]) {
+    if (taskController.text.trim().isNotEmpty &&
+        descriptionController.text.trim().isNotEmpty &&
+        dateController.text.trim().isNotEmpty) {
+      if (!doEdit) {
+        todoCard.add(
+          UserData(
+            task: taskController.text,
+            description: descriptionController.text,
+            date: dateController.text,
+          ),
+        );
+      } else {
+        setState(() {
+          forEditUseDataObj!.task = taskController.text.trim();
+          forEditUseDataObj.description = descriptionController.text.trim();
+          forEditUseDataObj.date = dateController.text.trim();
+        });
+      }
+    }
   }
 
   void clearData() {
@@ -47,7 +58,7 @@ class _TodoAppState extends State {
     dateController.clear();
   }
 
-  void bottomSheet() {
+  void bottomSheet(bool edit, [UserData? forEditObj]) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -203,8 +214,9 @@ class _TodoAppState extends State {
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        submitDate();
+                        edit ? submitData(edit, forEditObj) : submitData(edit);
                       });
+                      Navigator.of(context).pop();
                     },
                     style: const ButtonStyle(
                       shape: MaterialStatePropertyAll(
@@ -233,6 +245,20 @@ class _TodoAppState extends State {
         );
       },
     );
+  }
+
+  void deleteCard(UserData userDataObj) {
+    setState(() {
+      todoCard.remove(userDataObj);
+    });
+  }
+
+  void editCard(UserData editUserDataObj) {
+    taskController.text = editUserDataObj.task;
+    descriptionController.text = editUserDataObj.description;
+    dateController.text = editUserDataObj.date;
+
+    bottomSheet(true, editUserDataObj);
   }
 
   @override
@@ -324,6 +350,11 @@ class _TodoAppState extends State {
                                       children: [
                                         const SizedBox(height: 0),
                                         GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              editCard(todoCard[index]);
+                                            });
+                                          },
                                           child: Container(
                                             padding: const EdgeInsets.all(10),
                                             height: 40,
@@ -347,6 +378,11 @@ class _TodoAppState extends State {
                                           ),
                                         ),
                                         GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              deleteCard(todoCard[index]);
+                                            });
+                                          },
                                           child: Container(
                                             height: 40,
                                             width: 40,
@@ -373,15 +409,14 @@ class _TodoAppState extends State {
                               child: Container(
                                 margin: const EdgeInsets.only(top: 20),
                                 decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 239, 228, 193),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color:
-                                            Color.fromARGB(255, 158, 158, 160),
-                                        spreadRadius: 1,
-                                        blurRadius: 20),
-                                  ],
-                                ),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 20,
+                                          // spreadRadius: 4,
+                                          offset: (Offset(0, 4)),
+                                          color: Color.fromRGBO(0, 0, 0, 0.13))
+                                    ]),
                                 child: Column(
                                   children: [
                                     Row(
@@ -468,7 +503,8 @@ class _TodoAppState extends State {
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromRGBO(111, 81, 255, 1),
         onPressed: () {
-          bottomSheet();
+          clearData();
+          bottomSheet(false);
         },
         child: const Icon(
           Icons.add,

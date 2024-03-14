@@ -2,19 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_app/database.dart';
+import 'modelclass.dart';
 
 class TodoApp extends StatefulWidget {
   const TodoApp({super.key});
   @override
   State createState() => _TodoAppState();
-}
-
-class UserData {
-  String task;
-  String description;
-  String date;
-
-  UserData({required this.task, required this.description, required this.date});
 }
 
 class _TodoAppState extends State {
@@ -26,22 +20,36 @@ class _TodoAppState extends State {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // GlobalKey<FormFieldState> taskKey = GlobalKey<FormFieldState>();
-  // GlobalKey<FormFieldState> descriptionKey = GlobalKey<FormFieldState>();
-  // GlobalKey<FormFieldState> dateKey = GlobalKey<FormFieldState>();
+  @override
+  void initState() {
+    super.initState();
+    print("In intitState");
+    Future.delayed(Duration.zero, () async {
+      // setState(() async {
+      List<UserData> retList = await retriveData();
+      todoCard = retList;
+      print(todoCard);
+      // });
+    });
+  }
 
-  void submitData(bool doEdit, [UserData? forEditUseDataObj]) {
+  void submitData(bool doEdit, [UserData? forEditUseDataObj]) async {
     if (taskController.text.trim().isNotEmpty &&
         descriptionController.text.trim().isNotEmpty &&
         dateController.text.trim().isNotEmpty) {
       if (!doEdit) {
-        todoCard.add(
-          UserData(
-            task: taskController.text,
-            description: descriptionController.text,
-            date: dateController.text,
-          ),
+        UserData cards = UserData(
+          task: taskController.text,
+          description: descriptionController.text,
+          date: dateController.text,
         );
+
+        await insertCard(cards);
+        print(await retriveData());
+        setState(() async {
+          List<UserData> retValues = await retriveData();
+          todoCard = retValues;
+        });
       } else {
         setState(() {
           forEditUseDataObj!.task = taskController.text.trim();

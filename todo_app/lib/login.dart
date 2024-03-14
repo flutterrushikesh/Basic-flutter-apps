@@ -77,7 +77,8 @@ class _LoginState extends State {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextFormField(
-                      controller: passwordController,
+                      controller: usernameController,
+                      autofocus: false,
                       decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.person,
@@ -96,7 +97,8 @@ class _LoginState extends State {
                       height: 25,
                     ),
                     TextFormField(
-                      controller: usernameController,
+                      controller: passwordController,
+                      autofocus: false,
                       obscureText: true,
                       obscuringCharacter: "*",
                       decoration: const InputDecoration(
@@ -225,6 +227,7 @@ class _LoginState extends State {
                   children: [
                     TextFormField(
                       controller: nameController,
+                      autofocus: false,
                       decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.person,
@@ -244,6 +247,7 @@ class _LoginState extends State {
                     ),
                     TextFormField(
                       controller: usernameController,
+                      autofocus: false,
                       decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.person_4_outlined),
                         hintText: "username",
@@ -261,6 +265,7 @@ class _LoginState extends State {
                     ),
                     TextFormField(
                       controller: phoneNoController,
+                      autofocus: false,
                       decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.phone),
                         hintText: "Enter phone no",
@@ -279,6 +284,7 @@ class _LoginState extends State {
                     ),
                     TextFormField(
                       controller: passwordController,
+                      autofocus: false,
                       obscureText: true,
                       obscuringCharacter: "*",
                       decoration: const InputDecoration(
@@ -318,18 +324,12 @@ class _LoginState extends State {
                                 () {
                                   setState(
                                     () {
-                                      SignInModel userDetail = SignInModel(
-                                        name: nameController.text,
-                                        username: usernameController.text,
-                                        phone: phoneNoController.text,
-                                        password: passwordController.text,
-                                      );
-                                      insertSignInData(userDetail);
+                                      inserObj();
+                                      clearControllers();
                                     },
                                   );
                                 },
                               );
-                              isLogin = false;
                             },
                             child: Text(
                               "Sign in",
@@ -359,5 +359,39 @@ class _LoginState extends State {
   @override
   Widget build(BuildContext context) {
     return isLoginScreen();
+  }
+
+  void clearControllers() {
+    nameController.clear();
+    usernameController.clear();
+    phoneNoController.clear();
+    passwordController.clear();
+  }
+
+  void inserObj() {
+    if (usernameController.text.trim().isNotEmpty &&
+        passwordController.text.trim().isNotEmpty &&
+        nameController.text.trim().isNotEmpty &&
+        phoneNoController.text.trim().isNotEmpty) {
+      SignInModel userDetail = SignInModel(
+        name: nameController.text,
+        username: usernameController.text,
+        phone: phoneNoController.text,
+        password: passwordController.text,
+      );
+      insertSignInData(userDetail);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Let's login"),
+        ),
+      );
+      isLogin = false;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please enter details"),
+        ),
+      );
+    }
   }
 }

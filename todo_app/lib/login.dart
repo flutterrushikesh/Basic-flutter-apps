@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todo_app/database.dart';
 import 'package:todo_app/modelclass.dart';
+import 'app.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -22,7 +24,15 @@ class _LoginState extends State {
   TextEditingController phoneNoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
+  bool isShowText = false;
   bool isLogin = false;
+  bool showText() {
+    if (isShowText == true) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   Scaffold isLoginScreen() {
     if (isLogin == false) {
@@ -98,12 +108,18 @@ class _LoginState extends State {
                     ),
                     TextFormField(
                       controller: passwordController,
-                      autofocus: false,
-                      obscureText: true,
+                      // autofocus: false,
+                      obscureText: showText(),
                       obscuringCharacter: "*",
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        suffixIcon: Icon(Icons.remove_red_eye),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.lock),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {});
+                            isShowText = !isShowText;
+                          },
+                          child: toggleVisibilityIcon(),
+                        ),
                         hintText: "Enter password",
                       ),
                       validator: (value) {
@@ -132,7 +148,14 @@ class _LoginState extends State {
                                 backgroundColor: MaterialStatePropertyAll(
                                   Color.fromRGBO(7, 168, 171, 0.936),
                                 )),
-                            onPressed: () {},
+                            onPressed: () async {
+                              List userData = await getData();
+
+                              setState(() {
+                                validateLogin(userData);
+                                clearControllers();
+                              });
+                            },
                             child: Text(
                               "Login",
                               style: GoogleFonts.lato(
@@ -188,7 +211,22 @@ class _LoginState extends State {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 87),
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      isLogin = !isLogin;
+                      setState(() {});
+                    },
+                    child: Container(
+                        margin: const EdgeInsets.all(15),
+                        child: const Icon(Icons.arrow_back)),
+                  )
+                ],
+              ),
               Text(
                 "Let's register in",
                 style: GoogleFonts.lato(
@@ -285,11 +323,18 @@ class _LoginState extends State {
                     TextFormField(
                       controller: passwordController,
                       autofocus: false,
-                      obscureText: true,
+                      obscureText: showText(),
                       obscuringCharacter: "*",
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        suffixIcon: Icon(Icons.remove_red_eye),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.lock),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isShowText = !isShowText;
+                            });
+                          },
+                          child: toggleVisibilityIcon(),
+                        ),
                         hintText: "Enter password",
                       ),
                       keyboardType: TextInputType.emailAddress,
@@ -368,6 +413,14 @@ class _LoginState extends State {
     passwordController.clear();
   }
 
+  Icon toggleVisibilityIcon() {
+    if (isShowText == true) {
+      return const Icon(Icons.visibility);
+    } else {
+      return const Icon(Icons.visibility_off);
+    }
+  }
+
   void inserObj() {
     if (usernameController.text.trim().isNotEmpty &&
         passwordController.text.trim().isNotEmpty &&
@@ -393,5 +446,28 @@ class _LoginState extends State {
         ),
       );
     }
+  }
+
+  void validateLogin(List obj) {
+    for (int i = 0; i < obj.length; i++) {
+      if (obj[i].username == usernameController.text &&
+          obj[i].password == passwordController.text) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const TodoApp(),
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Login sucsessful"),
+          ),
+        );
+      }
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("User not found"),
+      ),
+    );
   }
 }

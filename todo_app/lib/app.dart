@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo_app/database.dart';
 import 'modelclass.dart';
 
 class TodoApp extends StatefulWidget {
@@ -20,18 +19,16 @@ class _TodoAppState extends State {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    super.initState();
-    print("In intitState");
-    Future.delayed(Duration.zero, () async {
-      // setState(() async {
-      List<UserData> retList = await retriveData();
-      todoCard = retList;
-      print(todoCard);
-      // });
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Future.delayed(Duration.zero, () async {
+  //     // setState(() async {
+  //     List<UserData> retList = await retriveData();
+  //     todoCard = retList;
+  //     setState(() {});
+  //   });
+  // }
 
   void submitData(bool doEdit, [UserData? forEditUseDataObj]) async {
     if (taskController.text.trim().isNotEmpty &&
@@ -44,14 +41,13 @@ class _TodoAppState extends State {
           date: dateController.text,
         );
 
-        await insertCard(cards);
-        print(await retriveData());
-        setState(() async {
-          List<UserData> retValues = await retriveData();
-          todoCard = retValues;
-        });
+        // await insertCard(cards);
+        // setState(() async {
+        //   List<UserData> retValues = await retriveData();
+        //   todoCard = retValues;
+        // });
       } else {
-        setState(() {
+        setState(() async {
           forEditUseDataObj!.task = taskController.text.trim();
           forEditUseDataObj.description = descriptionController.text.trim();
           forEditUseDataObj.date = dateController.text.trim();
@@ -95,10 +91,9 @@ class _TodoAppState extends State {
                     Text(
                       "Title",
                       style: GoogleFonts.quicksand(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17,
-                        color: const Color.fromRGBO(111, 81, 255, 1),
-                      ),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                          color: const Color.fromRGBO(7, 168, 171, 0.936)),
                     ),
                   ],
                 ),
@@ -114,7 +109,7 @@ class _TodoAppState extends State {
                         Radius.circular(5),
                       ),
                       borderSide: BorderSide(
-                        color: Color.fromRGBO(111, 81, 255, 1),
+                        color: Color.fromRGBO(7, 168, 171, 0.936),
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -132,10 +127,9 @@ class _TodoAppState extends State {
                     Text(
                       "Description",
                       style: GoogleFonts.quicksand(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17,
-                        color: const Color.fromRGBO(111, 81, 255, 1),
-                      ),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                          color: const Color.fromRGBO(7, 168, 171, 0.936)),
                     ),
                   ],
                 ),
@@ -151,7 +145,7 @@ class _TodoAppState extends State {
                         Radius.circular(5),
                       ),
                       borderSide: BorderSide(
-                        color: Color.fromRGBO(111, 85, 255, 1),
+                        color: Color.fromRGBO(7, 168, 171, 0.936),
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -171,10 +165,9 @@ class _TodoAppState extends State {
                     Text(
                       "Date",
                       style: GoogleFonts.quicksand(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17,
-                        color: const Color.fromRGBO(111, 81, 255, 1),
-                      ),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                          color: const Color.fromRGBO(7, 168, 171, 0.936)),
                     ),
                   ],
                 ),
@@ -190,7 +183,7 @@ class _TodoAppState extends State {
                         Radius.circular(5),
                       ),
                       borderSide: BorderSide(
-                        color: Color.fromRGBO(111, 81, 255, 1),
+                        color: Color.fromRGBO(7, 168, 171, 0.936),
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -235,8 +228,7 @@ class _TodoAppState extends State {
                         ),
                       ),
                       backgroundColor: MaterialStatePropertyAll(
-                        Color.fromRGBO(111, 81, 255, 1),
-                      ),
+                          Color.fromRGBO(7, 168, 171, 0.936)),
                     ),
                     child: Text(
                       "Submit",
@@ -272,7 +264,7 @@ class _TodoAppState extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(111, 81, 255, 1),
+      backgroundColor: const Color.fromRGBO(7, 168, 171, 0.936),
       body: Padding(
         padding: const EdgeInsets.only(top: 80),
         child: Column(
@@ -509,7 +501,7 @@ class _TodoAppState extends State {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromRGBO(111, 81, 255, 1),
+        backgroundColor: const Color.fromRGBO(7, 168, 171, 0.936),
         onPressed: () {
           clearData();
           bottomSheet(false);

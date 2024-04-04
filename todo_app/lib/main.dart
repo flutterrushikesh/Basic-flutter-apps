@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:todo_app/modelclass.dart';
+
 // import 'app.dart';
 import 'login.dart';
 import 'database.dart';
@@ -31,16 +29,8 @@ void main() async {
       )''');
     },
   );
-  log("database created");
-  SignInModel user1 = SignInModel(
-      name: "Rushi",
-      username: "rushikesh",
-      phone: "1234567890",
-      password: "Rushi@123");
-  insertSignInData(user1);
+
   runApp(const MyApp());
-  print("New data");
-  print(await getData());
 }
 
 class MyApp extends StatelessWidget {

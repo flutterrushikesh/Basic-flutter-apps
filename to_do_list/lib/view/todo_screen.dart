@@ -314,7 +314,7 @@ class _TodolistState extends State {
               borderRadius: const BorderRadius.all(
                 Radius.circular(10),
               ),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                     color: Colors.grey,
                     blurRadius: 16,

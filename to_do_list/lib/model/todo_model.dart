@@ -3,6 +3,9 @@ class TuduModel {
   String description;
   String date;
 
-  TuduModel(
-      {required this.title, required this.description, required this.date});
+  TuduModel({
+    required this.title,
+    required this.description,
+    required this.date,
+  });
 }

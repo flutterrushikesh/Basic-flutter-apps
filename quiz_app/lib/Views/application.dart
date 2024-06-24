@@ -87,25 +87,27 @@ class _QuizAppState extends State<QuizApp> {
   }
 
   void questionValidation() {
-    setState(() {
-      if (selectedAnswerIndex == -1) {
-        return;
-      }
-      if (selectedAnswerIndex == allQuestions[questionIndex].answerIndex) {
-        correctAnswers++;
-      }
-      if (selectedAnswerIndex != -1) {
-        if (questionIndex < allQuestions.length - 1) {
-          setState(() {
-            questionIndex++;
-          });
-        } else {
-          questionIndex = 0;
-          selectedAnswerIndex = -1;
-          questionScreen = 1;
+    setState(
+      () {
+        if (selectedAnswerIndex == -1) {
+          return;
         }
-      }
-    });
+        if (selectedAnswerIndex == allQuestions[questionIndex].answerIndex) {
+          correctAnswers++;
+        }
+        if (selectedAnswerIndex != -1) {
+          if (questionIndex < allQuestions.length - 1) {
+            setState(() {
+              questionIndex++;
+            });
+          } else {
+            questionIndex = 0;
+            selectedAnswerIndex = -1;
+            questionScreen = 1;
+          }
+        }
+      },
+    );
   }
 
   String result() {

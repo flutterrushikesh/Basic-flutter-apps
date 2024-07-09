@@ -3,15 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_list/model/todo_model.dart';
 
-class Todolist extends StatefulWidget {
-  const Todolist({super.key});
+class TodoScreen extends StatefulWidget {
+  const TodoScreen({super.key});
   @override
-  State createState() => _TodolistState();
+  State createState() => _TodoScreenState();
 }
 
-class _TodolistState extends State {
-//Controllers to store user input data.
-
+class _TodoScreenState extends State {
+  //Controllers to store user input data.
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
@@ -85,11 +84,13 @@ class _TodolistState extends State {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                "Create Task",
-                style: GoogleFonts.quicksand(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 28,
+              Center(
+                child: Text(
+                  "Create Task",
+                  style: GoogleFonts.quicksand(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 28,
+                  ),
                 ),
               ),
               const SizedBox(height: 15),
@@ -303,11 +304,17 @@ class _TodolistState extends State {
           color: Colors.white,
         ),
       ),
-      body: ListView.builder(
+      body: checkTaskList(),
+    );
+  }
+
+  Widget checkTaskList() {
+    if (cardList.isNotEmpty) {
+      return ListView.builder(
         itemCount: cardList.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            // padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(right: 10, top: 5),
             margin: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: colorList[index % colorList.length],
@@ -327,8 +334,8 @@ class _TodolistState extends State {
                 Row(
                   children: [
                     Container(
-                      height: 65,
-                      width: 65,
+                      height: 50,
+                      width: 50,
                       margin: const EdgeInsets.all(15),
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
@@ -345,12 +352,12 @@ class _TodolistState extends State {
                           Text(
                             cardList[index].title,
                             style: GoogleFonts.quicksand(
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               fontSize: 17,
                             ),
                           ),
                           const SizedBox(
-                            height: 8,
+                            height: 5,
                           ),
                           Text(
                             cardList[index].description,
@@ -363,7 +370,6 @@ class _TodolistState extends State {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 8),
                   ],
                 ),
                 const SizedBox(
@@ -411,7 +417,13 @@ class _TodolistState extends State {
             ),
           );
         },
-      ),
-    );
+      );
+    } else {
+      return Center(
+        child: Image.asset(
+          'assets/images/no task found.png',
+        ),
+      );
+    }
   }
 }

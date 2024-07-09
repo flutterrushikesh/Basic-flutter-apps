@@ -226,132 +226,131 @@ class _QuizAppState extends State<QuizApp> {
           centerTitle: true,
           backgroundColor: const Color.fromRGBO(0, 70, 67, 1),
         ),
-        body: Column(
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Qestions : ",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Qestions : ",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                Text(
-                  "${questionIndex + 1}/${allQuestions.length}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
+                  Text(
+                    "${questionIndex + 1}/${allQuestions.length}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                    ),
                   ),
+                ],
+              ),
+              const SizedBox(height: 25),
+              Text(
+                "${allQuestions[questionIndex].question}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 19,
                 ),
-              ],
-            ),
-            const SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "${allQuestions[questionIndex].question}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 50,
+                width: 280,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: validateAnswer(0),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 50,
-              width: 280,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: validateAnswer(0),
-                ),
-                onPressed: () {
-                  if (selectedAnswerIndex == -1) {
-                    setState(() {
-                      selectedAnswerIndex = 0;
-                    });
-                  }
-                },
-                child: Text(
-                  "A. ${allQuestions[questionIndex].option[0]}",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
+                  onPressed: () {
+                    if (selectedAnswerIndex == -1) {
+                      setState(() {
+                        selectedAnswerIndex = 0;
+                      });
+                    }
+                  },
+                  child: Text(
+                    "A. ${allQuestions[questionIndex].option[0]}",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 50,
-              width: 280,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: validateAnswer(1),
-                ),
-                onPressed: () {
-                  if (selectedAnswerIndex == -1) {
-                    setState(() {
-                      selectedAnswerIndex = 1;
-                    });
-                  }
-                },
-                child: Text(
-                  "B. ${allQuestions[questionIndex].option[1]}",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 50,
+                width: 280,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: validateAnswer(1),
+                  ),
+                  onPressed: () {
+                    if (selectedAnswerIndex == -1) {
+                      setState(() {
+                        selectedAnswerIndex = 1;
+                      });
+                    }
+                  },
+                  child: Text(
+                    "B. ${allQuestions[questionIndex].option[1]}",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 50,
-              width: 280,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: validateAnswer(2),
-                ),
-                onPressed: () {
-                  if (selectedAnswerIndex == -1) {
-                    setState(() {
-                      selectedAnswerIndex = 2;
-                    });
-                  }
-                },
-                child: Text("C. ${allQuestions[questionIndex].option[2]}",
-                    style: const TextStyle(fontSize: 18, color: Colors.black)),
-              ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 50,
-              width: 280,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: validateAnswer(3),
-                ),
-                onPressed: () {
-                  if (selectedAnswerIndex == -1) {
-                    setState(() {
-                      selectedAnswerIndex = 3;
-                    });
-                  }
-                },
-                child: Text(
-                  "D. ${allQuestions[questionIndex].option[3]}",
-                  style: const TextStyle(fontSize: 18, color: Colors.black),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 50,
+                width: 280,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: validateAnswer(2),
+                  ),
+                  onPressed: () {
+                    if (selectedAnswerIndex == -1) {
+                      setState(() {
+                        selectedAnswerIndex = 2;
+                      });
+                    }
+                  },
+                  child: Text("C. ${allQuestions[questionIndex].option[2]}",
+                      style:
+                          const TextStyle(fontSize: 18, color: Colors.black)),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 50,
+                width: 280,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: validateAnswer(3),
+                  ),
+                  onPressed: () {
+                    if (selectedAnswerIndex == -1) {
+                      setState(() {
+                        selectedAnswerIndex = 3;
+                      });
+                    }
+                  },
+                  child: Text(
+                    "D. ${allQuestions[questionIndex].option[3]}",
+                    style: const TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
